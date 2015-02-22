@@ -8,7 +8,7 @@ const HelloMessage = React.createClass({
     return
   },
   render: function() {
-    return <div>Yo {this.props.name}</div>;
+    return <div>Yo {this.props.name}</div>
   }
 });
 
@@ -98,7 +98,7 @@ var TeaForm = React.createClass({
       drinkTemp: this.refs.drinkTemp.state.drink
     };
 
-    this.setState(settings: json);
+    this.setState({settings: json});
     return request.post('/brew')
   },
   render: function () {
