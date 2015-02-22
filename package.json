@@ -5,7 +5,7 @@
   "scripts": {
     "start": "mkdir -p dist/js && ./node_modules/.bin/browserify client/app.js --debug -t babelify -o dist/js/app.js && ./bin/www",
     "watch": "mkdir -p dist/js && ./node_modules/.bin/watchify client/app.js --debug -t babelify -o dist/js/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jsxhint client/* server/* --reporter ./node_modules/jshint-stylish/stylish.js"
   },
   "repository": {
     "type": "git",
@@ -35,5 +35,9 @@
     "request-promise": "^0.4.0",
     "serve-favicon": "^2.2.0",
     "watchify": "^2.4.0"
+  },
+  "devDependencies": {
+    "jshint-stylish": "^1.0.0",
+    "jsxhint": "^0.12.0"
   }
 }
