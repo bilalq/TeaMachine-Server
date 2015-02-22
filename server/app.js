@@ -31,6 +31,8 @@ app.use(express.static(path.join(__dirname, '..', 'dist')))
  * Register routes
  */
 app.use('/', require('./routes/index'))
+app.use('/brew', require('./routes/brew'))
+
 
 /**
  * Export application module

@@ -17,5 +17,7 @@
   "lastsemic": true,
 
   // Environment options
-  "node": true
+  "node": true,
+
+  "globals": { "Promise": true }
 }
