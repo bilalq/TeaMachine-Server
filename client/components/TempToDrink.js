@@ -4,20 +4,20 @@ module.exports = function () {
   var TempToDrink = React.createClass({
     getInitialState: function () {
       return {
-        stepper: 60
+        drink: 60
       }
     },
     stepDown: function () {
-      this.setState({stepper : this.state.stepper - 1});
+      this.setState({drink : this.state.drink - 10});
     },
     stepUp: function () {
-      this.setState({stepper : this.state.stepper + 1});
+      this.setState({drink : this.state.drink + 10});
     },
     render: function () {
       return (
         <div>
-          <h2>Time to Drink</h2>
-          <h3>{this.state.stepper}</h3>
+          <h2>Temperature to Drink</h2>
+          <h3>{this.state.drink}</h3>
           <div>
             <button type="button" name="drinkDown" onClick={this.stepDown}>-</button>
             <button type="button" name="drinkDown" onClick={this.stepUp}>+</button>

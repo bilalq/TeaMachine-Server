@@ -1,5 +1,7 @@
 const React = require('react');
-// var TimeToBrew = require('./components/TeaForm.js');
+var request = require('request');
+// var TeaForm = require('/components/TeaForm.js');
+
 
 const HelloMessage = React.createClass({
   getInitialState: function () {
@@ -13,20 +15,20 @@ const HelloMessage = React.createClass({
 var TempToBrew = React.createClass({
   getInitialState: function () {
     return {
-      stepper: 120
+      brew: 120
     }
   },
   stepDown: function () {
-    this.setState({stepper : this.state.stepper - 10});
+    this.setState({brew : this.state.brew - 10});
   },
   stepUp: function () {
-    this.setState({stepper : this.state.stepper + 10});
+    this.setState({brew : this.state.brew + 10});
   },
   render: function () {
     return (
       <div>
         <h2>Temperature to Brew</h2>
-        <h3>{this.props.brew = this.state.stepper}</h3>
+        <h3>{this.state.brew}</h3>
         <div>
           <button type="button" name="tempDown" onClick={this.stepDown}>-</button>
           <button type="button" name="tempUp" onClick={this.stepUp}>+</button>
@@ -39,20 +41,20 @@ var TempToBrew = React.createClass({
 var TimeToBrew = React.createClass({
   getInitialState: function () {
     return {
-      stepper: 3
+      steep: 3
     }
   },
   stepDown: function () {
-    this.setState({stepper : this.state.stepper - 1});
+    this.setState({steep : this.state.steep - 1});
   },
   stepUp: function () {
-    this.setState({stepper : this.state.stepper + 1});
+    this.setState({steep : this.state.steep + 1});
   },
   render: function () {
     return (
       <div>
         <h2>Time To Brew</h2>
-        <h3>{this.props.steep = this.state.stepper}</h3>
+        <h3>{this.state.steep}</h3>
         <div>
           <button type="button" name="steepDown" onClick={this.stepDown}>-</button>
           <button type="button" name="steepUp" onClick={this.stepUp}>+</button>
@@ -65,20 +67,20 @@ var TimeToBrew = React.createClass({
 var TempToDrink = React.createClass({
   getInitialState: function () {
     return {
-      stepper: 60
+      drink: 60
     }
   },
   stepDown: function () {
-    this.setState({stepper : this.state.stepper - 1});
+    this.setState({drink : this.state.drink - 10});
   },
   stepUp: function () {
-    this.setState({stepper : this.state.stepper + 1});
+    this.setState({drink : this.state.drink + 10});
   },
   render: function () {
     return (
       <div>
-        <h2>Time to Drink</h2>
-        <h3>{this.props.drink = this.state.stepper}</h3>
+        <h2>Temperature to Drink</h2>
+        <h3>{this.state.drink}</h3>
         <div>
           <button type="button" name="drinkDown" onClick={this.stepDown}>-</button>
           <button type="button" name="drinkDown" onClick={this.stepUp}>+</button>
@@ -90,20 +92,23 @@ var TempToDrink = React.createClass({
 
 var TeaForm = React.createClass({
   submit: function () {
-    return {
-      brew: this.props.brew,
-      steep: this.props.steep,
-      drink: this.props.drink
-    }
+    var json = {
+      brewTemp: this.refs.brewTemp.state.brew,
+      steeptime: this.refs.brewTime.state.steep,
+      drinkTemp: this.refs.drinkTemp.state.drink
+    };
+
+    this.setState(settings: json);
+    return request.post('/brew')
   },
   render: function () {
     return(
-      <form>
-        <TempToBrew value={this.props.brew} />
-        <TimeToBrew value={this.props.steep} />
-        <TempToDrink value={this.props.drink} />
-        <button name="Submit" onClick={this.submit}>Submit</button>
-      </form>
+      <div>
+        <TempToBrew ref="brewTemp" />
+        <TimeToBrew ref="brewTime" />
+        <TempToDrink ref="drinkTemp" />
+        <button type="button" name="Submit" onClick={this.submit}>Submit</button>
+      </div>
     );
   }
 });
