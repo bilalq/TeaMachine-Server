@@ -1,0 +1,23 @@
+// vim: ft=javascript
+// jshint quotmark:double
+{
+  // Enforcing options
+  "bitwise": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "trailing": true,
+  "undef": true,
+
+  // Relaxing options
+  "asi": true,
+  "eqnull": true,
+  "laxcomma": true,
+  "lastsemic": true,
+
+  // Environment options
+  "esnext": true,
+  "node": false,
+  "browser": true,
+  "browserify": true
+}
