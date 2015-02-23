@@ -20,45 +20,77 @@ var reset = function() {
 }
 
 var waitFor = function(predicate) {
-  return new Promise(function(resolve, reject) {
-    var interval = setInterval(function() {
-      if (predicate()) {
-        resolve()
-      }
-    }, 1000)
-  })
+  return function() {
+      new Promise(function(resolve, reject) {
+      var interval = setInterval(function() {
+        if (predicate()) {
+          resolve()
+        }
+      }, 1000)
+    })
+  }
+}
+
+var celciusToFarenheit = function(temp) {
+  return (temp * 9 / 5) + 32
 }
 
 var ReadingPuller = (function() {
   var pullInterval
 
-  this.start = (function() {
+  var puller = {}
+  puller.start = (function() {
     if (!pullInterval) {
-      pullInterval = setInterval(exports.pullData)
+      pullInterval = setInterval(function() {
+        Promise.all([
+          // Should not hardcode or have tokens in here, but it's a hackathon
+          request.get('https://api.spark.io/v1/devices/54ff6c066678574933590767/currentState?access_token=6165f0ccc410de961f94ede4539ec7274043b5dc'),
+          request.get('https://api.spark.io/v1/devices/54ff6c066678574933590767/temp?access_token=6165f0ccc410de961f94ede4539ec7274043b5dc')
+        ])
+        .spread(function(stateData, tempData) {
+          return {
+            state: JSON.parse(stateData).result,
+            temperature: celciusToFarenheit(JSON.parse(tempData).result),
+            timestamp: Math.floor(Date.parse(JSON.parse(stateData).coreInfo.last_heard) / 1000)
+          }
+        })
+        .then(function(reading) {
+          var index = _.sortedIndex(hardwareReadings, reading, function(r) {
+            return r.timestamp
+          })
+          hardwareReadings.splice(index, 0, reading)
+          return _.last(hardwareReadings)
+        })
+        .catch(handleErr)
+      }, 1000)
     }
-  }).bind(this)
+  }).bind(puller)
 
-  this.stop = (function() {
+  puller.stop = (function() {
     if (pullInterval) {
       clearInterval(pullInterval)
       pullInterval = null
     }
-  }).bind(this)
+  }).bind(puller)
 
+  return puller
 })()
 
 exports.beginSteeping = function(tempToBrew, timeToBrew, tempToDrinkAt) {
+  console.log(arguments)
   reset()
   .then(Steeper.steepTempSensorOnly)
   .then(ReadingPuller.start)
   .then(waitFor(function() {
-    return _.last(hardwareReadings).temperature <= tempToBrew
+    var lastReading = _.last(hardwareReadings)
+    return lastReading && lastReading.temperature <= tempToBrew
   }))
   .then(Steeper.steepAll)
-  .delay(timeToBrew)
+  .delay(timeToBrew * 1000 * 60)
   .then(Steeper.steepTempSensorOnly)
   .then(waitFor(function() {
-    return _.last(hardwareReadings).temperature <= tempToDrinkAt
+    var lastReading = _.last(hardwareReadings)
+    return lastReading && lastReading.temperature <= tempToDrinkAt
   }))
   .then(ReadingPuller.stop)
   .then(Steeper.liftOut)
@@ -70,33 +102,13 @@ exports.cancelSteeping = function() {
   return reset()
 }
 
-var celciusToFarenheit = function(temp) {
-  return (temp * 9 / 5) + 32
-}
-exports.pullData = function(reading) {
-  return Promise.all([
-    // Should not hardcode or have tokens in here, but it's a hackathon
-    request.get('https://api.spark.io/v1/devices/54ff6c066678574933590767/currentState?access_token=6165f0ccc410de961f94ede4539ec7274043b5dc'),
-    request.get('https://api.spark.io/v1/devices/54ff6c066678574933590767/temp?access_token=6165f0ccc410de961f94ede4539ec7274043b5dc')
-  ])
-  .spread(function(stateData, tempData) {
-    return {
-      state: JSON.parse(stateData).result,
-      temperature: celciusToFarenheit(JSON.parse(tempData).result),
-      timestamp: Math.floor(Date.parse(JSON.parse(stateData).coreInfo.last_heard) / 1000)
-    }
-  })
-  .then(function(reading) {
-    var index = _.sortedIndex(hardwareReadings, reading, function(r) {
-      return r.timestamp
-    })
-    hardwareReadings.splice(index, 0, reading)
-    return _.last(hardwareReadings)
-  })
-}
-
 exports.getLatestReadings = function(timestamp) {
   return _.takeRightWhile(hardwareReadings, function(reading) {
     return !timestamp || reading.timestamp > timestamp
   })
 }
+
+Promise.delay(0)
+.then(ReadingPuller.start)
+.delay(10000)
+.then(ReadingPuller.stop)

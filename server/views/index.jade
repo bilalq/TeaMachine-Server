@@ -1,5 +1,30 @@
 extends layout
 
 block content
-  h1 Tea Machine
-  .tea-app
+
+  // Should've just written this in Angular using what we knew
+
+  .tea-form
+    .pure-g
+      .pure-u-1-3.tea-input.temp-to-brew
+        label(for="tempToBrew") Brew Temperature (&deg; F)
+        br
+        input( name="tempToBrew", value="210")
+
+      .pure-u-1-3.tea-input.time-to-brew
+        label(for="timeToBrew") Brew Time (minutes)
+        br
+        input( name="timeToBrew", value="3")
+
+      .pure-u-1-3.tea-input.temp-to-drink
+        label(for="tempToDrink") Drinking Temperature (&deg; F)
+        br
+        input(name="tempToDrink", value="160")
+
+    .pure-g
+      .pure-u-1
+        .submit-btn
+          button(type="button" id="beginBrew") Brew
+
+  .chart
+    canvas(width="700", height="400")

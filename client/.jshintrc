@@ -19,5 +19,7 @@
   "esnext": true,
   "node": false,
   "browser": true,
-  "browserify": true
+  "browserify": true,
+
+  "globals": { "Promise": true }
 }

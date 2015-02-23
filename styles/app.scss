@@ -1,2 +1,31 @@
 @import "base";
 @import "modules/global";
+@import "modules/form";
+
+/* Background pattern from subtlepatterns.com */
+
+body {
+  background-image: url('/lightpaperfibers.png');
+  background-repeat: repeat;
+}
+
+h1 {
+  font-family: 'Clicker Script', cursive;
+  font-weight: 400;
+  font-size: 6em;
+  color: #444;
+  text-shadow: 1px 1px #fefefe;
+  margin: auto;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+get {
+  display: none;
+}
+
+.chart {
+  text-align: center;
+  margin: auto;
+}

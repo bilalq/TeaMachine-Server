@@ -1,0 +1,58 @@
+@import "base";
+
+.tea-input {
+  margin: auto;
+  text-align: center;
+
+  label {
+    font-family: 'Clicker Script', cursive;
+    font-size: 35px;
+  }
+
+  input {
+    margin-top: 15px;
+    height: 60px;
+    width: 220px;
+    text-align: center;
+    font-family: 'Clicker Script', 'Helvetica', sans-serif;
+    font-size: 50px;
+    font-weight: 100;
+  }
+}
+
+.submit-btn {
+  button {
+    outline: none;
+    $primary-color: #8A9A5B;
+    $secondary-color: darken($primary-color, 10%);
+    margin: auto;
+    margin-top: 100px;
+    background-color: $primary-color;
+    border-radius: 3px;
+    border-color: $secondary-color;
+    box-shadow: 0 2px 0 $secondary-color;
+    -moz-box-shadow: 0 2px 0 $secondary-color;
+    -webkit-box-shadow: 0 2px 0 $secondary-color;
+    color: #fff;
+    display: block;
+    line-height: 38px;
+    text-align: center;
+    width: 190px;
+    text-transform: uppercase;
+    padding: 20px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    display: table;
+    font-family: Helvetica, Arial, sans-serif;
+    height: 70px;
+    font-weight: 100;
+    border: none;
+    &:hover {
+      background-color: $secondary-color;
+      cursor: pointer;
+    }
+  }
+  text-align: center;
+  margin: auto;
+}
+

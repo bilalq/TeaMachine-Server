@@ -6,12 +6,16 @@ router.get('/', function(req, res) {
 })
 
 router.post('/', function(req, res) {
-  Hardware.beginSteeping({
-    tempToBrew: req.param('tempToBrew'),
-    timeToBrew: req.param('timeToBrew') * 60 * 1000, // convert to milliseconds
-    tempToDrinkAt: req.param('timeToBrew')
-  })
-  res.send(200)
+  // Hacks on hacks on hacks
+  //
+  // The body parser config is probably messed up somehow, but we don't have
+  // time to debug
+  Hardware.beginSteeping(
+    req.query.bt,
+    req.query.t,
+    req.query.dt
+  )
+  res.sendStatus(200)
 })
 
 router.delete('/', function(req, res) {

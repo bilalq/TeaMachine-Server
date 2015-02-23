@@ -23,24 +23,15 @@ exports.State = {
 
 exports.liftOut = function() {
   return setState(exports.State.Outside)
-  .then(function(x) {
-    console.log('working:', x)
-  })
   .catch(console.error.bind(console))
 }
 
 exports.steepTempSensorOnly = function() {
   return setState(exports.State.TempSensorOnly)
-  .tap(function(x) {
-    console.log('working:', x)
-  })
   .catch(console.error.bind(console))
 }
 
 exports.steepAll = function() {
   return setState(exports.State.AllIn)
-  .tap(function(x) {
-    console.log('working:', x)
-  })
   .catch(console.error.bind(console))
 }
